@@ -1,5 +1,6 @@
 pragma solidity ^0.4.0;
 contract Ballot {
+
     struct Voter {
         uint weight;
         bool voted;
@@ -9,6 +10,7 @@ contract Ballot {
     struct Proposal {
         uint voteCount;
     }
+
     address chairperson;
     mapping(address => Voter) voters;
     Proposal[] proposals;
@@ -26,7 +28,8 @@ contract Ballot {
         if (msg.sender != chairperson || voters[toVoter].voted) return;
         voters[toVoter].weight = 1;
     }
-    /// Delegate  vote to the voter $(to).
+
+    /// Delegate your vote to the voter $(to).
     function delegate(address to) public {
         Voter storage sender = voters[msg.sender]; // assigns reference
         if (sender.voted) return;
@@ -42,7 +45,7 @@ contract Ballot {
             delegateTo.weight += sender.weight;
     }
 
-    /// Gives single vote to proposal $(toProposal).
+    /// Give a single vote to proposal $(toProposal).
     function vote(uint8 toProposal) public {
         Voter storage sender = voters[msg.sender];
         if (sender.voted || toProposal >= proposals.length) return;
